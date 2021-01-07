@@ -5,7 +5,7 @@
   DESCRIPTION:
   The sketch searches active (communicating) devices on one-wire bus.
   - The sketch lists hardware ROM addresses of discovered devices.
-  - The sketch check CRC of ROMs and list wrong addresses.
+  - The sketch check CRC of ROMs and lists wrong addresses.
   - Results are displayed in serial monitor.
 
   LICENSE:
@@ -15,11 +15,8 @@
   CREDENTIALS:
   Author: Libor Gabaj
 */
-#include <Arduino.h>
-#include <OneWire.h>
-#include "gbj_serial_debug.h"
-
 #define SKETCH "ONEWIRE_SCANNER 1.0.0"
+#include <OneWire.h>
 
 const unsigned char PIN_ONEWIRE = 4; // Connect your one-wire bus to this pin
 const unsigned char ADDRESS_LEN = 8;
@@ -44,24 +41,24 @@ String textAddress(Address address)
 
 void setup()
 {
-  SERIAL_BEGIN(9600)
-  SERIAL_TITLE(SKETCH)
-  SERIAL_DELIM
+  Serial.begin(9600);
+  Serial.println(); // Some sernum monitors display garbage at the begining
+  Serial.println(SKETCH);
+  Serial.println("---");
   byte deviceNum = 0;
   while (ds.search(address))
   {
     if (ds.crc8(address, 7) != address[7])
     {
-      SERIAL_LINE
-      SERIAL_VALUE("Wrong CRC for address", textAddress(address))
-      SERIAL_LINE
+      Serial.println();
+      Serial.println("Wrong CRC for address" + textAddress(address));
       continue;
     }
-    SERIAL_LOG3(++deviceNum, ". ROM: ", textAddress(address))
+    Serial.println(String(++deviceNum) + ". ROM: " + textAddress(address));
   }
   ds.reset_search();
-  SERIAL_DELIM
-  SERIAL_VALUE("Devices", deviceNum)
+  Serial.println("---");
+  Serial.println("Devices: " + String(deviceNum));
 }
 
 void loop() {}
