@@ -3,6 +3,7 @@ Primary LED  (LED_BUILTIN)
 GPIO13: Arduino
 GPIO2, D4: Wemos d1_mini, Lolin NodeMCU v3, Amica (ESP-12 LED -- near the ESP chip)
 GPIO1, TX: ESP8266-01
+GPIO2: NodeMCU ESP-32S
 
 Secondary LED (LED_BUILTIN_AUX)
 ===============================
